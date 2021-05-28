@@ -34,7 +34,7 @@ test: main
 	@cat "${in}" | ./main
 
 input_test: main
-	@cat "${INPUT_TEST_ARGS}" | ./main
+	@echo "${INPUT_TEST_ARGS}" | ./main
 
 gen_test: gen.cpp
 	@g++ -std=c++17 -O2 -Wall -Wextra -Wshadow -fno-sanitize-recover \
