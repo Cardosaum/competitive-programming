@@ -21,9 +21,11 @@ typedef vector<long long int> vll;
 typedef vector<char> vc;
 typedef long double ld;
 typedef istringstream iss;
+typedef set<int> si;
+typedef map<int,int> mii;
 
-typedef set<int>::iterator sit;
-typedef map<int,int>::iterator mit;
+typedef set<int>::iterator si_it;
+typedef map<int,int>::iterator mii_it;
 typedef vector<int>::iterator vit;
 typedef vector<long long int>::iterator vllit;
 
