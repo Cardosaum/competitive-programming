@@ -10,7 +10,7 @@ MAIN_DEST="main.cpp"
 MAKEFILE_DEST="Makefile"
 URL=$(xclip -sel c -o )
 
-echo "${URL}" | rg '(contest/\d+/)?problem(/\d+)?/[\w\d]+$' -o | xargs -d $'\n' sh -c 'for arg do mkdir -p "$arg"; echo -n "$arg" | xclip -sel c; done' _
+echo "${URL}" | rg '(contest/\d+/)?problems?(/\d+)?/[\w\d]+/?$' -o | xargs -d $'\n' sh -c 'for arg do mkdir -p "$arg"; echo -n "$arg" | xclip -sel c; done' _
 NEW_PWD=$(xclip -sel c -o)
 cd "${NEW_PWD}"
 curl "${URL}" | pup '.sample-tests' | codeforces_parse_input.py

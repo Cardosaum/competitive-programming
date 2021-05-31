@@ -13,9 +13,11 @@ using namespace std;
 #define te try_emplace
 
 typedef long long ll;
+typedef unsigned long ul;
 typedef unsigned long long ull;
 typedef pair<int,int> ii;
 typedef vector<int> vi;
+typedef vector<string> vs;
 typedef vector<ii> vii;
 typedef vector<long long int> vll;
 typedef vector<char> vc;
@@ -23,6 +25,8 @@ typedef long double ld;
 typedef istringstream iss;
 typedef set<int> si;
 typedef map<int,int> mii;
+typedef map<string,int> msi;
+typedef map<char,int> mci;
 
 typedef set<int>::iterator si_it;
 typedef map<int,int>::iterator mii_it;
