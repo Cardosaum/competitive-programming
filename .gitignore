@@ -9,3 +9,4 @@ build
 htmlcov
 
 .cf/
+**/rosalind_sign.txt
