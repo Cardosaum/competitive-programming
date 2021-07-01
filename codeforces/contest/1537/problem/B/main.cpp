@@ -51,8 +51,14 @@ typedef vector<long long int>::iterator vllit;
 
 pullull far(ull n, ull m, ull *i, ull *j) {
     pullull p;
-    p.first = max({*i + (n - *i), max((ull)1, *i - 1)});
-    p.second = max({*j + (m - *j), max((ull)1, *j - 1)});
+    if (n - *i >= *i)
+        p.fi = n;
+    else
+        p.fi = 1;
+    if (m - *j >= *j)
+        p.se = m;
+    else
+        p.se = 1;
     *i = p.first;
     *j = p.second;
     // cout << p.first << "," << p.second << endl;
