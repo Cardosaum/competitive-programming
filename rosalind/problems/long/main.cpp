@@ -56,6 +56,22 @@ typedef vector<long long int>::iterator vllit;
 [[maybe_unused]] const int MOD = 1e9 + 7;
 [[maybe_unused]] const int MAXN = 1e6 + 3;
 
+string overlap(string a, string b) {
+    string s = "";
+    auto b_size = b.size();
+    auto a_size = a.size();
+    if (a_size > b_size)
+        rull(i, a_size - b_size + 1) if (a.substr(i, b_size) ==
+                                         b) return "SUBSTRING";
+    rull(i, a.size()) {
+        auto a_sub = a.substr(i);
+        auto a_sub_size = a_sub.size();
+        if (a_sub == b.substr(0, a_sub_size) && a_sub_size >= (b_size - 1) / 2)
+            return a.substr(0, i) + b;
+    }
+    return s;
+}
+
 mss read_fasta() {
     string s, gene;
     mss genes;
@@ -63,14 +79,11 @@ mss read_fasta() {
         if (s.front() == '>') {
             gene = s.substr(1);
             genes[gene] = "";
-        } else {
+        } else
             genes[gene] += s;
-        }
     }
     return genes;
 }
-
-string overlap(string a, string b) {}
 
 int main() {
     SPEED;
@@ -79,6 +92,37 @@ int main() {
     out.open("result.txt");
 
     auto genes = read_fasta();
-
-    out.close();
+    vs v;
+    for (auto [k, s_] : genes)
+        v.pb(s_);
+    auto seq = v.back();
+    v.pop_back();
+    ull COUN = 0;
+    while (!v.empty()) {
+        cout << ++COUN << ") " << seq << endl;
+        // cout << "VECTOR: ";
+        for (auto i : v)
+            cout << i << endl;
+        for (ull i = v.size(); i-- > 0;) {
+            auto tmp = overlap(seq, v[i]);
+            if (tmp == "SUBSTRING") {
+                v.erase(v.begin() + i);
+                break;
+            }
+            if (!tmp.empty()) {
+                seq = tmp;
+                v.erase(v.begin() + i);
+                break;
+            }
+            tmp = overlap(v[i], seq);
+            if (!tmp.empty()) {
+                seq = tmp;
+                v.erase(v.begin() + i);
+                break;
+            }
+        }
+    }
+    cout << "FINAL: " << endl;
+    cout << seq << endl;
+    return 0;
 }
