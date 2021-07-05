@@ -57,54 +57,30 @@ int main() {
     SPEED;
     ull n;
     cin >> n;
-    deque<ull> v;
-    while (n--) {
-        ull x;
-        cin >> x;
-        v.pb(x);
-    }
-    sort(all(v));
-    ull cars = 0;
-    while (!v.empty()) {
-        for (auto i : v) {
-            cout << i << ",";
-        }
-        cout << " ; cars: " << cars;
-        cout << endl;
-        bool is_full = false;
-        ull n_in_taxi = 0;
-        bool max_or_min = 1; // 1 => max ; 0 => min
-        while (!is_full && !v.empty()) {
-            if (is_full) {
-                break;
-            }
-            if (!flip) { // add first value of vec
-                flip = true;
-                if (v.front() + n_in_taxi <= 4) {
-                    n_in_taxi += v.front();
-                    v.pop_front();
-                } else {
-                    is_full = true;
-                }
-            } else { // add last value of vec
-                flip = false;
-                auto tmp = v;
-                while (tmp.back() + n_in_taxi > 4 &&
-                       tmp.begin() != tmp.end() - 1) {
-                    tmp.pop_back();
-                }
-                if (v.back() + n_in_taxi <= 4) {
-                    n_in_taxi += v.back();
-                    v.pop_back();
-                } else {
-                    is_full = true;
-                }
-            }
-            if (n_in_taxi == 4) {
-                is_full = true;
-            }
-        }
-        cars++;
-    }
+    mullull m;
+    while (cin >> n)
+        m[n]++;
+    ull cars = m[4];
+    ull tmp = min({m[1], m[3]});
+    cars += tmp;
+    m[1] -= tmp;
+    m[3] -= tmp;
+    tmp = m[2] / 2;
+    cars += tmp;
+    m[2] -= tmp * 2;
+    tmp = min({m[1] / 2, m[2]});
+    cars += tmp;
+    m[1] -= tmp * 2;
+    m[2] -= tmp;
+    cars += m[3];
+    cars += m[2] / 2;
+    cars += m[1] / 4;
+    cars += m[2] % 2;
+    cars += m[1] % 4;
     cout << cars << endl;
+    // ull current = 0;
+    // for (auto [k, v] : m){
+    //     if (m[k] && k+current <= 0){m[k]--;current+=k;}
+    //     else if (m[k]==0){current+=3;m[k]--;}
+    // }
 }
