@@ -13,6 +13,8 @@ using namespace std;
 #define YES cout << "YES" << endl;
 #define NO cout << "NO" << endl;
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
+#define rint(i, n) for (int i = 0; i < (int)(n); i++)
+#define rull(i, n) for (ull i = 0; i < (ull)(n); i++)
 #define fi first
 #define se second
 #define mp make_pair
