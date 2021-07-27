@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include <cmath>
+#include <numeric>
 using namespace std;
 
 #define all(v) v.begin(), v.end()
@@ -56,95 +57,178 @@ typedef vector<long long int>::iterator vllit;
 [[maybe_unused]] const int MOD = 1e9 + 7;
 [[maybe_unused]] const int MAXN = 1e6 + 3;
 
-ull least_factor(ull n) {
-    ull x = 2;
-    ull limit = (ull)sqrt(n);
-    while (x <= limit) {
-        if (n % x == 0)
-            return x;
-        else
-            x++;
+sull primes(ull n) {
+    // return all prime number in range [2, n]
+    sull prime;
+    sull composite;
+    for (ull i = 2; i <= n; i++) {
+        if (composite.find(i) != composite.end())
+            continue;
+        for (ull j = i * i; j <= n; j += i)
+            composite.insert(j);
+        prime.insert(i);
     }
-    return n;
+    return prime;
 }
 
-mullull factorize(ull n) {
-    mullull factors;
-    while (n != 1) {
-        ull factor = least_factor(n);
-        n /= factor;
-        factors[factor]++;
-    }
-    return factors;
-}
+// ull least_factor(ull n) {
+//     ull x = 2;
+//     ull limit = (ull)sqrt(n);
+//     while (x <= limit) {
+//         if (n % x == 0)
+//             return x;
+//         else
+//             x++;
+//     }
+//     return n;
+// }
 
-ull num_divisors(mullull f) {
-    ull divisors = 1;
-    for (auto const &[k, v] : f)
-        divisors *= (v + 1);
-    return divisors;
-}
+// mullull factorize(ull n) {
+//     mullull factors;
+//     while (n != 1) {
+//         ull factor = least_factor(n);
+//         n /= factor;
+//         factors[factor]++;
+//     }
+//     return factors;
+// }
 
-sull all_divisors(ull n) {
-    sull d;
-    for (ull i = 1; i <= n; i++)
-        if (n % i == 0)
-            d.insert(i);
-    return d;
-}
+// ull num_divisors(mullull &f) {
+//     ull divisors = 1;
+//     for (auto const &[k, v] : f)
+//         divisors *= (v + 1);
+//     return divisors;
+// }
 
-ull delta_divisors(sull all_divisors) {
+// sull all_divisors(mullull &factorized) {
+//     sull d;
+//     vector<pair<ull, ull>> factors;
+//     for (auto const &[k, v] : factorized)
+//         factors.emplace_back(mp(k, v));
+//     ull nfactors = factors.size();
+//     vull f(nfactors);
+//     while (1) {
+//         ull s = 1;
+//         vull tmp;
+//         rull(i, nfactors) { tmp.emplace_back(pow(factors[i].first, f[i])); }
+//         for (auto const &i : tmp)
+//             s *= i;
+//         d.insert(s);
+//         ull I = 0;
+//         while (1) {
+//             f[I]++;
+//             if (f[I] <= factors[I].second) {
+//                 break;
+//             }
+//             f[I] = 0;
+//             I++;
+//             if (I >= nfactors) {
+//                 goto all_divisors_end;
+//             }
+//         }
+//     }
+// all_divisors_end:
+//     return d;
+
+//     // for (ull j = 1; j * j <= n; j++) {
+//     //     if (n % j == 0) {
+//     //         d.insert(j);
+//     //         if (j != (n / j))
+//     //             d.insert(n / j);
+//     //     }
+//     // }
+// }
+
+// ull delta_divisors(sull all_divisors) {
+//     ull a = 0;
+//     ull b = 0;
+//     ull delta = INF;
+//     for (auto const &i : all_divisors) {
+//         if (!a) {
+//             a = i;
+//             continue;
+//         }
+//         b = i;
+//         delta = min(delta, (b - a));
+//         a = b;
+//     }
+//     return delta;
+// }
+
+// bool ok(ull n, ull d, map<ull, pair<ull, ull>> &dp) {
+//     if (dp[n].first == 0 && dp[n].second == 0) {
+//         auto f = factorize(n);
+//         auto divisors = num_divisors(f);
+//         dp[n].first = divisors;
+//         if (divisors < 4) {
+//             return false;
+//         } else {
+//             dp[n].second = delta_divisors(all_divisors(f));
+//             return dp[n].second >= d;
+//         }
+//     } else {
+//         return dp[n].first >= 4 && dp[n].second >= d;
+//     }
+// }
+
+ull answer(ull d, sull &prime) {
     ull a = 0;
     ull b = 0;
-    ull delta = INF;
-    for (auto const &i : all_divisors) {
-        if (!a) {
+    for (auto const &i : prime) {
+        if (d <= i - 1 && a == 0)
             a = i;
-            continue;
+        else if (d <= i - a && a != 0) {
+            b = i;
+            break;
         }
-        b = i;
-        delta = min(delta, (b - a));
-        a = b;
     }
-    return delta;
-}
-
-bool ok(ull n, ull d, map<ull, pair<ull, ull>> &dp) {
-    if (dp[n].first == 0 && dp[n].second == 0) {
-        auto f = factorize(n);
-        auto divisors = num_divisors(f);
-        dp[n].first = divisors;
-        if (divisors < 4) {
-            return false;
-        } else {
-            dp[n].second = delta_divisors(all_divisors(n));
-            return dp[n].second >= d;
-        }
-    } else {
-        return dp[n].first >= 4 && dp[n].second >= d;
-    }
+    return a * b;
 }
 
 int main() {
     SPEED;
-    map<ull, pair<ull, ull>> dp;
-    rull(j, 3000) {
-        for (ull i = 1; i <= 10000; i++) {
-            cout << i << ":" << ok(i, 2, dp) << endl;
-        }
-    }
+    // map<ull, pullull> dp;
+    auto prime = primes(100'000);
 
-    // TESTS {
-    //     ull d;
-    //     cin >> d;
-    //     ull number = 6;
-    //     while (1) {
-    //         // cout << "=> " << number << endl;
-    //         if (ok(number, d, dp)) {
-    //             cout << number << endl;
-    //             break;
+    // auto f = factorize(329847198123);
+    // for (auto const &i : all_divisors(f))
+    //     cout << i << " ";
+    // cout << endl;
+    //
+    // std::random_device rd;  // obtain a random number from hardware
+    // std::mt19937 gen(rd()); // seed the generator
+    // std::uniform_int_distribution<> distr(1, 10000); // define the range
+    // rull(j, 3000) {
+    //     ull delta = distr(gen);
+    //     for (ull i = 6; i <= INF; i++) {
+    //         if (ok(i, delta, dp)) {
+    //             cout << i << ":" << delta << endl;
     //         }
-    //         number++;
+    //         cout << delta << ") " << i << ": " << dp[i].first << "="
+    //              << dp[i].second << endl;
     //     }
     // }
+
+    // for (ull i = 1; i <= 10'000; i++) {
+    //     cout << i << ": " << answer(i, prime) << endl;
+    //     // for (ull j = 1; j <= INF; j++) {
+    //     //     // cout << j << ") ";
+    //     //     // for (auto const &[k, v] : factorize(j))
+    //     //     //     cout << k << ":" << v << " ";
+    //     //     // cout << endl;
+    //     //     if (ok(j, i, dp)) {
+    //     //         cout << i << ":" << j << endl;
+    //     //         break;
+    //     //     }
+    //     // }
+    // }
+    // cout << endl;
+
+    TESTS {
+        ull d;
+        cin >> d;
+        cout << answer(d, prime) << endl;
+        // cout << a * b << " " << a << ":" << b << endl;
+        // cout << a * b << endl;
+    }
 }
