@@ -57,18 +57,33 @@ typedef vector<long long int>::iterator vllit;
 
 int main() {
     SPEED;
-    TESTS {
-        ull n, k;
-        cin >> n >> k;
-        if (n > k) {
-            ull d = n / k;
-            ull r = n % k;
-            k *= r ? d + 1 : d;
-        }
-        ull d = k / n;
-        ull r = k % n;
-        if (r != 0)
-            d++;
-        cout << d << endl;
+    ull n;
+    cin >> n;
+    vull v(n);
+    for (auto &i : v)
+        cin >> i;
+    sort(all(v));
+    mullull m;
+    for (struct {
+             ull i;
+             ull j;
+         } s = {0, 0};
+         s.i < v.size(); s.i++) {
+        s.j++;
+        m[v[s.i]] = s.j;
+    }
+    vull price_shops(m.rbegin()->first + 2);
+    ull last_shop = 0;
+    rull(i, (m.rbegin()->first + 1)) {
+        if (m[i])
+            last_shop = m[i];
+        price_shops[i] = last_shop;
+    }
+    ull q;
+    cin >> q;
+    while (q--) {
+        ull coins;
+        cin >> coins;
+        cout << price_shops[coins] << endl;
     }
 }

@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <tuple>
 using namespace std;
 
 #define all(v) v.begin(), v.end()
@@ -57,18 +58,57 @@ typedef vector<long long int>::iterator vllit;
 
 int main() {
     SPEED;
-    TESTS {
-        ull n, k;
-        cin >> n >> k;
-        if (n > k) {
-            ull d = n / k;
-            ull r = n % k;
-            k *= r ? d + 1 : d;
-        }
-        ull d = k / n;
-        ull r = k % n;
-        if (r != 0)
-            d++;
-        cout << d << endl;
+    ll n, m, k;
+    cin >> n >> m >> k;
+    vll v(n);
+    vll delta(n + 1);
+    for (auto &i : v)
+        cin >> i;
+    v.push_back(0);
+    vector<tuple<ll, ll, ll>> operations(m);
+    vll delta2(n + 1);
+    for (auto &i : operations) {
+        ll l, r, d;
+        cin >> l >> r >> d;
+        i = make_tuple(l, r, d);
+        delta2[l - 1] += d;
+        delta2[r] += -d;
     }
+    for (auto const &i : delta2)
+        cout << i << " ";
+    cout << endl;
+    cout << endl;
+
+    while (k--) {
+        // for (auto const &i : delta)
+        //     cout << i << " ";
+        // cout << endl;
+        ll x, y;
+        cin >> x >> y;
+        x--;
+        delta[x] += delta2[x];
+        delta[y] += -delta2[x];
+        // for (ll i = x; i <= y; i++) {
+        //     ll l, r, d;
+        //     tie(l, r, d) = operations[i];
+        //     l--;
+        //     r--;
+        //     delta[l] += d;
+        //     delta[r + 1] += -d;
+        // }
+    }
+    for (auto const &i : delta)
+        cout << i << " ";
+    cout << endl;
+    vll psum(n + 1);
+    ll s = 0;
+    for (ll i = 0; i <= n; i++) {
+        s += delta[i];
+        psum[i] = s + v[i];
+    }
+    // cout << endl;
+    psum.pop_back();
+    for (auto const &i : psum)
+        cout << i << " ";
+    cout << endl;
 }

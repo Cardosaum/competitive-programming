@@ -55,10 +55,40 @@ typedef vector<long long int>::iterator vllit;
 [[maybe_unused]] const int MOD = 1e9 + 7;
 [[maybe_unused]] const int MAXN = 1e6 + 3;
 
+ull bt(ull n, ull k) {
+    ull ith = 0;
+    for (ull i = 1; ith != k; i++) {
+        if (i % n == 0)
+            continue;
+        ith++;
+        if (ith == k) {
+            return i;
+        }
+    }
+    return 0;
+}
+
+ull ty(ull n, ull k) {
+    auto r = ((k / (n - 1)) * n);
+    auto m = k % (n - 1);
+    if (m == 0)
+        r--;
+    else
+        r += m;
+    return r;
+}
+
 int main() {
     SPEED;
+    // cout << 3 << ":" << 7 << "= " << bt(3, 7) << endl;
+    // cout << 3 << ":" << 7 << "= " << ty(3, 7) << endl;
+    // cout << 4 << ":" << 12 << "= " << bt(4, 12) << endl;
+    // cout << 4 << ":" << 12 << "= " << ty(4, 12) << endl;
+    // cout << 9 << ":" << 101 << "= " << bt(9, 101) << endl;
+    // cout << 9 << ":" << 101 << "= " << ty(9, 101) << endl;
     TESTS {
         ull n, k;
         cin >> n >> k;
+        cout << ty(n, k) << endl;
     }
 }

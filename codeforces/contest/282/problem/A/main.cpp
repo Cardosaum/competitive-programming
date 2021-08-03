@@ -55,20 +55,4 @@ typedef vector<long long int>::iterator vllit;
 [[maybe_unused]] const int MOD = 1e9 + 7;
 [[maybe_unused]] const int MAXN = 1e6 + 3;
 
-int main() {
-    SPEED;
-    TESTS {
-        ull n, k;
-        cin >> n >> k;
-        if (n > k) {
-            ull d = n / k;
-            ull r = n % k;
-            k *= r ? d + 1 : d;
-        }
-        ull d = k / n;
-        ull r = k % n;
-        if (r != 0)
-            d++;
-        cout << d << endl;
-    }
-}
+int main() { SPEED; }

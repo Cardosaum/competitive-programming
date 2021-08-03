@@ -57,18 +57,25 @@ typedef vector<long long int>::iterator vllit;
 
 int main() {
     SPEED;
-    TESTS {
-        ull n, k;
-        cin >> n >> k;
-        if (n > k) {
-            ull d = n / k;
-            ull r = n % k;
-            k *= r ? d + 1 : d;
-        }
-        ull d = k / n;
-        ull r = k % n;
-        if (r != 0)
-            d++;
-        cout << d << endl;
+    ll n, q, t;
+    cin >> n >> q >> t;
+    vll delta(n + 2);
+    vll psum(n + 2);
+    while (q--) {
+        ll l, r, x;
+        cin >> l >> r >> x;
+        delta[l] += x;
+        delta[r + 1] += -x;
     }
+    ll s = 0;
+    rull(i, delta.size()) {
+        s += delta[i];
+        psum[i] = s;
+    }
+    ull good_coffe = 0;
+    rull(i, psum.size()) {
+        if (psum[i] >= t)
+            good_coffe++;
+    }
+    cout << good_coffe << endl;
 }
