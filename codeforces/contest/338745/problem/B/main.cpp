@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include <tuple>
+#include <utility>
 using namespace std;
 
 #define all(v) v.begin(), v.end()
@@ -58,50 +58,33 @@ typedef vector<long long int>::iterator vllit;
 
 int main() {
     SPEED;
-    ll n, m, k;
-    cin >> n >> m >> k;
-    vll v(n);
+    ull n, q;
+    cin >> n >> q;
+    vull v(n);
     for (auto &i : v)
         cin >> i;
-    v.push_back(0);
-    vector<tuple<ll, ll, ll>> op(m);
-    for (auto &i : op) {
-        ll l, r, d;
-        cin >> l >> r >> d;
-        i = make_tuple(l, r, d);
-    }
-    vll op_delta(m + 1);
-    while (k--) {
-        ll x, y;
+    vector<pullull> queries(q);
+    for (auto &i : queries) {
+        ull x, y;
         cin >> x >> y;
-        x--;
-        op_delta[x]++;
-        op_delta[y]--;
+        i = make_pair(x, y);
+    }
+    vll queries_delta(n + 1);
+    rull(i, queries.size()) {
+        queries_delta[queries[i].first - 1]++;
+        queries_delta[queries[i].second]--;
     }
     ll s = 0;
-    vll op_psum(m + 1);
-    rull(i, op_delta.size()) {
-        s += op_delta[i];
-        op_psum[i] += s;
+    vll queries_psum(n + 1);
+    rull(i, queries_delta.size()) {
+        s += queries_delta[i];
+        queries_psum[i] += s;
     }
+    queries_psum.pop_back();
+    sort(all(v));
+    sort(all(queries_psum));
 
-    vll v_delta(n + 1);
-    rull(i, op.size()) {
-        ll l, r, d;
-        tie(l, r, d) = op[i];
-        v_delta[l - 1] += (d * op_psum[i]);
-        v_delta[r] += -(d * op_psum[i]);
-    }
-
-    s = 0;
-    vll v_psum(n + 1);
-    rull(i, v_delta.size()) {
-        s += v_delta[i];
-        v_psum[i] += s + v[i];
-    }
-
-    v_psum.pop_back();
-    for (auto const &i : v_psum)
-        cout << i << " ";
-    cout << endl;
+    ull total = 0;
+    rull(i, n) total += queries_psum[i] * v[i];
+    cout << total << endl;
 }

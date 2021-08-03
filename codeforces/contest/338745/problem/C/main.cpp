@@ -79,11 +79,17 @@ int main() {
             last_shop = m[i];
         price_shops[i] = last_shop;
     }
+    price_shops.pop_back();
     ull q;
     cin >> q;
+    ull tmp = price_shops.size() - 1;
     while (q--) {
         ull coins;
         cin >> coins;
-        cout << price_shops[coins] << endl;
+        if (coins > tmp) {
+            cout << price_shops.back() << endl;
+        } else {
+            cout << price_shops[coins] << endl;
+        }
     }
 }

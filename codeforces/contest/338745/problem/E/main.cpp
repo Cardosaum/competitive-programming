@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include <tuple>
 using namespace std;
 
 #define all(v) v.begin(), v.end()
@@ -56,52 +55,48 @@ typedef vector<long long int>::iterator vllit;
 [[maybe_unused]] const int MOD = 1e9 + 7;
 [[maybe_unused]] const int MAXN = 1e6 + 3;
 
+ull points(ull k, deque<ull> &v_psum) {
+    k = k - (k / 4);
+    if ((v_psum.size() - 1 - k) > v_psum.size())
+        return v_psum.back();
+    else
+        return v_psum.back() - v_psum[(v_psum.size() - 1 - k)];
+}
+
 int main() {
     SPEED;
-    ll n, m, k;
-    cin >> n >> m >> k;
-    vll v(n);
-    for (auto &i : v)
-        cin >> i;
-    v.push_back(0);
-    vector<tuple<ll, ll, ll>> op(m);
-    for (auto &i : op) {
-        ll l, r, d;
-        cin >> l >> r >> d;
-        i = make_tuple(l, r, d);
+    TESTS {
+        ull n;
+        cin >> n;
+        vull me(n);
+        vull you(n);
+        for (auto &i : me)
+            cin >> i;
+        for (auto &i : you)
+            cin >> i;
+        sort(all(me));
+        sort(all(you));
+        ull s = 0;
+        deque<ull> me_psum(n + 1);
+        deque<ull> you_psum(n + 1);
+        rull(i, n) {
+            s += me[i];
+            me_psum[i] = s;
+        }
+        s = 0;
+        rull(i, n) {
+            s += you[i];
+            you_psum[i] = s;
+        }
+        me_psum.pop_back();
+        you_psum.pop_back();
+        ull more_contests = 0;
+        while (points(n, me_psum) < points(n, you_psum)) {
+            n++;
+            more_contests++;
+            me_psum.push_back(me_psum.back() + 100);
+            you_psum.push_front(0);
+        }
+        cout << more_contests << endl;
     }
-    vll op_delta(m + 1);
-    while (k--) {
-        ll x, y;
-        cin >> x >> y;
-        x--;
-        op_delta[x]++;
-        op_delta[y]--;
-    }
-    ll s = 0;
-    vll op_psum(m + 1);
-    rull(i, op_delta.size()) {
-        s += op_delta[i];
-        op_psum[i] += s;
-    }
-
-    vll v_delta(n + 1);
-    rull(i, op.size()) {
-        ll l, r, d;
-        tie(l, r, d) = op[i];
-        v_delta[l - 1] += (d * op_psum[i]);
-        v_delta[r] += -(d * op_psum[i]);
-    }
-
-    s = 0;
-    vll v_psum(n + 1);
-    rull(i, v_delta.size()) {
-        s += v_delta[i];
-        v_psum[i] += s + v[i];
-    }
-
-    v_psum.pop_back();
-    for (auto const &i : v_psum)
-        cout << i << " ";
-    cout << endl;
 }
