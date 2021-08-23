@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include <tuple>
+#include <cmath>
 using namespace std;
 
 #define all(v) v.begin(), v.end()
@@ -56,14 +56,31 @@ typedef vector<long long int>::iterator vllit;
 [[maybe_unused]] const int MOD = 1e9 + 7;
 [[maybe_unused]] const int MAXN = 1e6 + 3;
 
+ull len_n(ull const &x) { return (ull)(trunc(log10(x)) + 1); }
+
+sull primes(ull n) {
+    // return all prime number in range [2, n]
+    sull prime;
+    sull composite;
+    for (ull i = 2; i <= n; i++) {
+        if (composite.find(i) != composite.end())
+            continue;
+        for (ull j = i * i; j <= n; j += i)
+            composite.insert(j);
+        prime.insert(i);
+    }
+    return prime;
+}
+
 int main() {
     SPEED;
-    ull n, k;
-    cin >> n >> k;
-    vull v(n);
-    for (auto &i : v) {
-        ull t, b;
-        cin >> t >> b;
-        i = t * b;
+    sull p = primes(10000);
+    for (auto const &i : p) {
+        cout << i << " ";
     }
+    cout << endl;
+    // TESTS {
+    //     ull x, y, g;
+    //     cin >> x >> y >> g;
+    // }
 }

@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include <tuple>
 using namespace std;
 
 #define all(v) v.begin(), v.end()
@@ -58,12 +57,5 @@ typedef vector<long long int>::iterator vllit;
 
 int main() {
     SPEED;
-    ull n, k;
-    cin >> n >> k;
-    vull v(n);
-    for (auto &i : v) {
-        ull t, b;
-        cin >> t >> b;
-        i = t * b;
-    }
+    ull n, m, k;
 }

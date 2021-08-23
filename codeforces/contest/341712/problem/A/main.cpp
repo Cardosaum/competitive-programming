@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include <tuple>
 using namespace std;
 
 #define all(v) v.begin(), v.end()
@@ -56,14 +55,55 @@ typedef vector<long long int>::iterator vllit;
 [[maybe_unused]] const int MOD = 1e9 + 7;
 [[maybe_unused]] const int MAXN = 1e6 + 3;
 
+ull least_factor(ull n) {
+    ull x = 2;
+    ull limit = (ull)sqrt(n);
+    while (x <= limit) {
+        if (n % x == 0)
+            return x;
+        else
+            x++;
+    }
+    return n;
+}
+
+mullull factorize(ull n) {
+    mullull factors;
+    while (n != 1) {
+        ull factor = least_factor(n);
+        n /= factor;
+        factors[factor]++;
+    }
+    return factors;
+}
+
 int main() {
     SPEED;
-    ull n, k;
-    cin >> n >> k;
-    vull v(n);
-    for (auto &i : v) {
-        ull t, b;
-        cin >> t >> b;
-        i = t * b;
+    map<ull, mullull> factors;
+    TESTS {
+        ull n;
+        cin >> n;
+        mullull m;
+        bool yes = false;
+        while (n--) {
+            ull x;
+            cin >> x;
+            if (factors[x].empty())
+                factors[x] = factorize(x);
+            for (auto const &[k, v] : factors[x])
+                m[k] += v;
+            for (auto const &[k, v] : m) {
+                // cout << k << ":" << v << endl;
+                if (v % 2) {
+                    yes = true;
+                    break;
+                }
+            }
+        }
+        if (yes) {
+            YES;
+        } else {
+            NO;
+        }
     }
 }
