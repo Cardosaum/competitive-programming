@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
 #include <cmath>
+#include <random>
+#include <stdexcept>
 using namespace std;
 
 #define all(v) v.begin(), v.end()
@@ -72,15 +74,137 @@ sull primes(ull n) {
     return prime;
 }
 
+ull least_factor(ull n) {
+    ull x = 2;
+    ull limit = (ull)sqrt(n);
+    while (x <= limit) {
+        if (n % x == 0)
+            return x;
+        else
+            x++;
+    }
+    return n;
+}
+
+mullull factorize(ull n) {
+    mullull factors;
+    while (n != 1) {
+        ull factor = least_factor(n);
+        n /= factor;
+        factors[factor]++;
+    }
+    return factors;
+}
+
+sull all_divisors(mullull &factorized) {
+    sull d;
+    d.insert(1);
+    if (factorized.empty())
+        return d;
+    vector<pair<ull, ull>> factors;
+    for (auto const &[k, v] : factorized)
+        factors.emplace_back(mp(k, v));
+    ull nfactors = factors.size();
+    vull f(nfactors);
+    while (1) {
+        ull s = 1;
+        vull tmp;
+        rull(i, nfactors) { tmp.emplace_back(pow(factors[i].first, f[i])); }
+        for (auto const &i : tmp)
+            s *= i;
+        d.insert(s);
+        ull I = 0;
+        while (1) {
+            f[I]++;
+            if (f[I] <= factors[I].second) {
+                break;
+            }
+            f[I] = 0;
+            I++;
+            if (I >= nfactors) {
+                goto all_divisors_end;
+            }
+        }
+    }
+all_divisors_end:
+    return d;
+}
+
 int main() {
     SPEED;
-    sull p = primes(10000);
-    for (auto const &i : p) {
-        cout << i << " ";
-    }
-    cout << endl;
-    // TESTS {
-    //     ull x, y, g;
-    //     cin >> x >> y >> g;
+    random_device rd;
+    mt19937 gen(rd());
+    // auto p = primes(5000);
+    // map<ull, sull> m;
+    // for (auto const &i : p)
+    //     m[len_n(i)].insert(i);
+    // for (auto const &[k, v] : m) {
+    //     cout << k << ": ";
+    //     for (auto const &j : v) {
+    //         cout << j << ", ";
+    //     }
+    //     cout << endl;
     // }
+    // return 0;
+
+    TESTS {
+        ull NCS = 0;
+        ull x, y, g;
+        cin >> x >> y >> g;
+        // int tmp_a_u = (int)pow(10, x) - 1;
+        // int tmp_a_l = (int)pow(10, x - 1);
+        // int tmp_b_u = (int)pow(10, y) - 1;
+        // int tmp_b_l = (int)pow(10, y - 1);
+        //
+        int tmp_g_u = (int)pow(10, g) - 1;
+        int tmp_g_l = (int)pow(10, g - 1);
+        if (tmp_g_l == 1)
+            tmp_g_l++;
+        //
+        // cout << tmp_a_l << ":" << tmp_a_u << " ; " << tmp_b_l << ":" <<
+        // tmp_b_u
+        //      << endl;
+        ull xa = INF;
+        ull xb = INF;
+        ull xg = INF;
+        do {
+            NCS++;
+            // uniform_int_distribution<> a(tmp_a_l, tmp_a_u);
+            // uniform_int_distribution<> b(tmp_b_l, tmp_b_u);
+            uniform_int_distribution<> gd(tmp_g_l, tmp_g_u);
+            // xa = a(gen);
+            // xb = b(gen);
+            xg = gd(gen);
+            auto f = factorize(xg);
+            auto d = all_divisors(f);
+            cout << xg << ") ";
+            for (auto const &[k, v] : f)
+                cout << k << ":" << v << " ";
+            cout << endl;
+            // xa = *d.;
+            // xb = *d.rbegin();
+            // while (len(xa)) {
+            // }
+        } while (0);
+        //
+        // cout << x << " " << y << " : " << g << endl;
+        // cout << xa << ": " << xb << " , " << gcd(xa, xb) << " = " << NCS
+        //      << endl;
+        // break;
+        //
+        // cout << xa << " " << xb << " (" << g << ") " << NCS << endl;
+        // cout << xa << ") ";
+        // auto f = factorize(xa);
+        // auto d = all_divisors(f);
+        // for (auto const &i : d)
+        //     cout << i << " ";
+        // cout << endl;
+        // cout << xb << ") ";
+        // f = factorize(xb);
+        // d = all_divisors(f);
+        // for (auto const &i : d)
+        //     cout << i << " ";
+        // cout << endl;
+        // cout << endl;
+    }
 }
