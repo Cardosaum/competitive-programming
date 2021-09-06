@@ -55,6 +55,62 @@ typedef vector<long long int>::iterator vllit;
 [[maybe_unused]] const int MOD = 1e9 + 7;
 [[maybe_unused]] const int MAXN = 1e6 + 3;
 
+ull least_factor(ull n) {
+    ull x = 2;
+    ull limit = (ull)sqrt(n);
+    while (x <= limit) {
+        if (n % x == 0)
+            return x;
+        else
+            x++;
+    }
+    return n;
+}
+
+mullull factorize(ull n) {
+    mullull factors;
+    while (n != 1) {
+        ull factor = least_factor(n);
+        n /= factor;
+        factors[factor]++;
+    }
+    return factors;
+}
+
+sull all_divisors(mullull &factorized) {
+    sull d;
+    d.insert(1);
+    if (factorized.empty())
+        return d;
+    vector<pair<ull, ull>> factors;
+    for (auto const &[k, v] : factorized)
+        factors.emplace_back(mp(k, v));
+    ull nfactors = factors.size();
+    vull f(nfactors);
+    while (1) {
+        ull s = 1;
+        vull tmp;
+        rull(i, nfactors) { tmp.emplace_back(pow(factors[i].first, f[i])); }
+        for (auto const &i : tmp)
+            s *= i;
+        d.insert(s);
+        ull I = 0;
+        while (1) {
+            f[I]++;
+            if (f[I] <= factors[I].second) {
+                break;
+            }
+            f[I] = 0;
+            I++;
+            if (I >= nfactors) {
+                goto all_divisors_end;
+            }
+        }
+    }
+all_divisors_end:
+    return d;
+}
+
 void sieve(ull lim, vull &divisors, sull &primes) {
     divisors[1] = 1;
     for (ull i = 2; i <= lim; i++) {
@@ -68,6 +124,20 @@ void sieve(ull lim, vull &divisors, sull &primes) {
     }
 }
 
+ull upow(ull base, ull exp) {
+    ull result = 1;
+    for (;;) {
+        if (exp & 1)
+            result *= base;
+        exp >>= 1;
+        if (!exp)
+            break;
+        base *= base;
+    }
+
+    return result;
+}
+
 int main() {
     SPEED;
     vull divisors(1e3 + 3);
@@ -75,17 +145,28 @@ int main() {
     sieve(1e3, divisors, primes);
     ull n;
     cin >> n;
-    ull almost_primes = 0;
+    sull almost_primes;
     for (ull i = 6; i <= n; i++) {
-        ull prime_divisors = 0;
-        for (auto const &j : primes) {
-            if (i % j == 0)
-                prime_divisors++;
-            if (prime_divisors > 2)
-                break;
-        }
-        if (prime_divisors == 2)
-            almost_primes++;
+        auto f = factorize(i);
+        if (f.size() == 2)
+            almost_primes.insert(i);
     }
-    cout << almost_primes << endl;
+    // for (auto const &i : primes) {
+    //     for (auto const &j : primes) {
+    //         if (i == j)
+    //             continue;
+    //         for (ull c = 1; c <= n; c++) {
+    //             for (ull d = 1; d <= n; d++) {
+    //                 ull tmp = upow(i, c) * upow(j, d);
+    //                 if (tmp <= n)
+    //                     almost_primes.insert(tmp);
+    //                 else
+    //                     break;
+    //             }
+    //             if (upow(i, c) > n)
+    //                 break;
+    //         }
+    //     }
+    // }
+    cout << almost_primes.size() << endl;
 }
