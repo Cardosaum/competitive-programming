@@ -55,41 +55,39 @@ typedef vector<long long int>::iterator vllit;
 [[maybe_unused]] const int MOD = 1e9 + 7;
 [[maybe_unused]] const int MAXN = 1e6 + 3;
 
-ull divi[MAXN];
-
-void crivo(ull lim) {
-    for (ull i = 1; i <= lim; i++)
-        divi[i] = 1;
-
-    for (ull i = 2; i <= lim; i++)
-        if (divi[i] == 1)
-            for (ull j = i; j <= lim; j += i)
-                divi[j] = i;
+ull least_factor(ull n) {
+    ull x = 2;
+    ull limit = (ull)sqrt(n);
+    while (x <= limit) {
+        if (n % x == 0)
+            return x;
+        else
+            x++;
+    }
+    return n;
 }
 
-void fact(vector<ull> &v, ull n) {
-    if (n != divi[n])
-        fact(v, n / divi[n]);
-    v.push_back(divi[n]);
+mullull factorize(ull n) {
+    mullull factors;
+    while (n != 1) {
+        ull factor = least_factor(n);
+        n /= factor;
+        factors[factor]++;
+    }
+    return factors;
 }
 
 int main() {
     SPEED;
-    crivo(MAXN - 1);
     TESTS {
-        int n;
+        ull n;
         cin >> n;
-        vull v;
-        mullull f;
+        auto f = factorize(n);
         ull divisors = 1;
-
-        fact(v, n);
-
-        for (auto const &i : v)
-            f[i]++;
-        for (auto const &[k, j] : f)
-            divisors *= (j + 1);
-
+        for (auto const &[k, v] : f)
+            divisors *= v + 1;
+        cout << n << ": ";
+        cout << divisors << endl;
         if (divisors == 3) {
             YES;
         } else {
