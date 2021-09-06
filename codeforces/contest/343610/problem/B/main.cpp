@@ -86,8 +86,8 @@ int main() {
         ull divisors = 1;
         for (auto const &[k, v] : f)
             divisors *= v + 1;
-        cout << n << ": ";
-        cout << divisors << endl;
+        // cout << n << ": ";
+        // cout << divisors << endl;
         if (divisors == 3) {
             YES;
         } else {
