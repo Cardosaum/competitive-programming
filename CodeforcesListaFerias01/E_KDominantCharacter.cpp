@@ -60,17 +60,15 @@ typedef vector<long long int>::iterator vllit;
 [[maybe_unused]] const int MAXN = 1e6 + 3;
 
 ull kdom(const char &c, const string &s) {
-  vull v;
-  rull(i, s.size()) {
-    if (s[i] == c)
-      v.push_back(i);
+  ull dist = 0;
+  ull r = 0;
+  for (auto const &i : s) {
+    if (i == c)
+      r = 0;
+    else
+      dist = max(dist, ++r);
   }
-  ull dist = v.front();
-  for (ull i = 1; i < v.size(); i++)
-    dist = max(dist, v[i] - v[i - 1]);
-  if (v.back() != s.size())
-    dist = max(dist, s.size() - v.back());
-  return dist;
+  return dist + 1;
 }
 
 int main() {
