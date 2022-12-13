@@ -5,20 +5,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// template <typename T>
-// void print_vector(const vector<T> &vec) {
-//     for (auto i: vec)
-//         cout << i << " ";
-//     cout << endl;
-// }
-
-// template <typename T>
-// void read_vector(vector<T>&vec) {
-//     T i;
-//     while (cin>>i)
-//         vec.push_back(i);
-// }
-
 template <typename T>
 int insertion_sort(vector<T>& v) {
     int swaps (0);
@@ -45,7 +31,6 @@ int main() {
         for (int i = 0; i < vec_size; i++)
             cin >> vec[i];
         auto swaps = insertion_sort(vec);
-        // print_vector(vec);
         cout << swaps << endl;
     }
 }
