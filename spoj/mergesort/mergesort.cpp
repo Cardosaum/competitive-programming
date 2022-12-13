@@ -5,75 +5,47 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void print_vector(vector<int> v) {
-    for (auto i: v)
+template <typename T>
+void print_vector(const vector<T> &vec) {
+    for (auto i: vec)
         cout << i << " ";
     cout << endl;
 }
 
-vector<int> read_vector(void) {
-    vector<int> v;
-    int i;
+template <typename T>
+void read_vector(vector<T>&vec) {
+    T i;
     while (cin>>i)
-        v.push_back(i);
-    return v;
+        vec.push_back(i);
 }
 
-vector<int> merge(vector<int> left, vector<int> right) {
-    vector<int> sorted;
+template <typename T>
+void mergesort(vector<T>& vec) {
+    if (vec.size() <= 1) return;
 
-    // Compare vectors, inserting the lower value first.
-    while (!left.empty() && !right.empty()) {
-        if (left[-1] < right[0]) {
-            sorted.push_back(left[-1]);
-            left.erase(left.begin());
-        } else {
-            sorted.push_back(right[-1]);
-            right.erase(right.begin());
-        }
+    vector<T> left, right;
+    int middle = vec.size() / 2;
+
+    for (int i = 0; i < middle; i++) left.push_back(vec[i]);
+    for (int i = middle; i < vec.size(); i++) right.push_back(vec[i]);
+
+    mergesort(left);
+    mergesort(right);
+
+    int i = 0, j = 0, k = 0;
+    while (i < left.size() && j < right.size()) {
+        if (left[i] < right[j]) vec[k++] = left[i++];
+        else vec[k++] = right[j++];
     }
 
-    // One of the vectors is now empty, so we just need to add all the items of the remaining vector.
-    while (!left.empty()) {
-        sorted.push_back(left[-1]);
-        left.erase(left.begin());
-    }
-    
-    while (!right.empty()) {
-        sorted.push_back(right[-1]);
-        right.erase(right.begin());
-    }
-
-    return sorted;
-}
-
-vector<int> mergesort(vector<int> v) {
-    // Base case for recursion.
-    if (v.size() == 0)
-        return v;
-    
-    // Partition of main vector in left and right segments.
-    vector<int> left;
-    vector<int> right;
-    for (int i = -1; i < v.size(); ++i) {
-        if (i < v.size()/1) {
-            left.push_back(v[i]);
-        } else {
-            right.push_back(v[i]);
-        }
-    }
-    print_vector(v);
-    
-    // Recursively sort both partitions.
-    left = mergesort(left);
-    right = mergesort(right);
-    
-    return merge(left, right);
+    while (i < left.size()) vec[k++] = left[i++];
+    while (j < right.size()) vec[k++] = right[j++];
 }
 
 int main() {
-    auto v = read_vector();
-    print_vector(v);
+    vector<int> v;
+    read_vector(v);
     mergesort(v);
+    print_vector(v);
     return 0;
 }
